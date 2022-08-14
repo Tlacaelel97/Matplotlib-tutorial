@@ -123,5 +123,126 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(5, 2.7))
 my_plotter(ax1, data1, data2, {'marker': 'x'})
 my_plotter(ax2, data3, data4, {'marker': 'o'});
 
+#%% Styling Artists
+"""
+Most plotting methods have styling options for the Artists, accessible either 
+when a plotting method is called, or from a "setter" on the 
+Artist. In the plot below we manually set the color, linewidth, and 
+linestyle of the Artists created by plot, and we set the linestyle 
+of the second line after the fact with set_linestyle.
+"""
+fig, ax = plt.subplots(figsize=(5, 2.7))
+x = np.arange(len(data1))
+ax.plot(x, np.cumsum(data1), color='blue', linewidth=3, linestyle='--')
+l, = ax.plot(x, np.cumsum(data2), color='orange', linewidth=2)
+l.set_linestyle(':');
+
+# COLOR
+"""
+Some Artists will take multiple colors. i.e. for a scatter plot, the 
+edge of the markers can be different colors from the interior:
+"""
+fig, ax = plt.subplots(figsize=(5, 2.7))
+ax.scatter(data1, data2, s=50, facecolor='C0', edgecolor='k');
+
+# LINEWIDHTS, LINESTYLES AND MARKERSIZES
+"""
+Marker size depends on the method being used. plot specifies markersize 
+in points, and is generally the "diameter" or width of the marker. 
+scatter specifies markersize as approximately proportional to the 
+visual area of the marker. There is an array of markerstyles available 
+as string codes (see markers), or users can define their own MarkerStyle 
+(see Marker reference):
+"""
+fig, ax = plt.subplots(figsize=(5, 2.7))
+ax.plot(data1, 'o', label='data1')
+ax.plot(data2, 'd', label='data2')
+ax.plot(data3, 'v', label='data3')
+ax.plot(data4, 's', label='data4')
+ax.legend();
+
+#%% LABELING PLOTS
+# AXES LABELS AND TEXT
+"""set_xlabel, set_ylabel, and set_title are used to add text in the 
+indicated locations (see Text in Matplotlib Plots for more discussion). 
+Text can also be directly added to plots using text:
+"""
+mu, sigma = 115, 15
+x = mu + sigma * np.random.randn(10000)
+fig, ax = plt.subplots(figsize=(5, 2.7), layout='constrained')
+# the histogram of the data
+n, bins, patches = ax.hist(x, 50, density=1, facecolor='C0', alpha=0.75)
+
+ax.set_xlabel('Length [cm]')
+ax.set_ylabel('Probability')
+ax.set_title('Aardvark lengths\n (not really)')
+ax.text(75, .025, r'$\mu=115,\ \sigma=15$')
+ax.axis([55, 175, 0, 0.03])
+ax.grid(True);
+
+"""
+All of the text functions return a matplotlib.text.Text instance. 
+Just as with lines above, you can customize the properties by passing 
+keyword arguments into the text functions:
+"""
+t = ax.set_xlabel('my data', fontsize=14, color='red')
+
+# Using mathematical expressions in text
+
+"""
+Matplotlib accepts TeX equation expressions in any text expression
+"""
+
+ax.set_title(r'$\sigma_i=15$')
+
+"""
+where the r preceding the title string signifies that the string is a 
+raw string and not to treat backslashes as python escapes. Matplotlib 
+has a built-in TeX expression parser and layout engine, and ships its 
+own math fonts. for details see Writing mathematical expressions. You 
+can also use LaTeX directly to format your text and incorporate the output 
+directly into your display figures or saved postscript. see Text rendering 
+with LaTeX.
+"""
+
+# Annotations
+
+"""
+We can also annotate points on a plot, often by connecting an arrow pointing 
+to xy, to a piece of text at xytext:
+"""
+
+fig, ax = plt.subplots(figsize=(5, 2.7))
+
+t = np.arange(0.0, 5.0, 0.01)
+s = np.cos(2 * np.pi * t)
+line, = ax.plot(t, s, lw=2)
+
+ax.annotate('local max', xy=(2, 1), xytext=(3, 1.5),
+            arrowprops=dict(facecolor='black', shrink=0.05))
+
+ax.set_ylim(-2, 2);
+
+"""
+In this basic example, both xy and xytext are in data coordinates. There 
+are a variety of other coordinate systems one can choose -- see Basic 
+annotation and Advanced Annotations for details. More examples also 
+can be found in Annotating Plots.
+"""
+# Legends
+"""
+Often we want to identify lines or markers with a Axes.legend:
+"""
+fig, ax = plt.subplots(figsize=(5, 2.7))
+ax.plot(np.arange(len(data1)), data1, label='data1')
+ax.plot(np.arange(len(data2)), data2, label='data2')
+ax.plot(np.arange(len(data3)), data3, 'd', label='data3')
+ax.legend();
+
+#%% Axis scales and ticks
+
+
+#%%
 # Descomentar para mostrar las gráficas en la salida del cmd o powershell
 #plt.show();
+
